@@ -15,6 +15,8 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->date('date');
+            $table->integer('visitor_count')->default(0);
+            $table->enum('status', ['Draft', 'Published'])->default('Draft');
             $table->foreignId('host_id')->constrained('users')->onDelete('cascade');
             $table->string('location');
             $table->longText('description')->nullable();

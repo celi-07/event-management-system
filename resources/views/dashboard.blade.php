@@ -13,10 +13,14 @@
 
   {{-- KPI Cards --}}
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-    <x-stat-card label="My Events" :value="$stats['my_events']"/>
+    <x-stat-card label="My Events" :value="count($events)"/>
+    <x-stat-card label="Invitations Sent" :value="count($invitations)"/>
+    <x-stat-card label="Pending Invites" :value="count($invitations->where('status', 'Pending'))"/>
+    <x-stat-card label="Total Attendees" :value="$invitations->whereIn('event_id', $events->pluck('id'))->where('status','Accepted')->count()"/>
+    {{-- <x-stat-card label="My Events" :value="$stats['my_events']"/>
     <x-stat-card label="Invitations Sent" :value="$stats['invites_sent']"/>
     <x-stat-card label="Pending Invites" :value="$stats['invites_pending']"/>
-    <x-stat-card label="Total Attendees" :value="$stats['attendees_total']"/>
+    <x-stat-card label="Total Attendees" :value="$stats['attendees_total']"/> --}}
   </div>
 
   <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
@@ -28,12 +32,12 @@
           <a href="{{ url('/invitations') }}" class="text-sm text-indigo-600 hover:underline">View all</a>
         </div>
         <ul class="divide-y divide-gray-100">
-          @foreach ($upcomingInvites as $inv)
+          @foreach ($invitations->take(6) as $inv)
           <li class="p-4 flex items-center justify-between">
             <div>
-              <div class="font-medium">{{ $inv['title'] }}</div>
+              <div class="font-medium">{{ $inv->event->title }}</div>
               <div class="text-sm text-gray-600">
-                {{ \Illuminate\Support\Carbon::parse($inv['date'])->format('D, M j · H:i') }} · Host: {{ $inv['host'] }}
+                {{ \Illuminate\Support\Carbon::parse($inv['date'])->format('D, M j · H:i') }} · Host: {{ $inv->event->host->name }}
               </div>
             </div>
             <span @class([
@@ -54,7 +58,7 @@
         <div class="flex items-center justify-between p-4 border-b border-gray-100">
           <h2 class="font-semibold">My Events</h2>
           <div class="flex items-center gap-2">
-            <a href="{{ url('/events/create') }}" class="text-sm rounded-lg border px-3 py-1.5 hover:bg-gray-50">Create</a>
+            <a href="{{ url('/create/events') }}" class="text-sm rounded-lg border px-3 py-1.5 hover:bg-gray-50">Create</a>
             <a href="{{ url('/events') }}" class="text-sm text-indigo-600 hover:underline">Manage</a>
           </div>
         </div>
@@ -71,11 +75,11 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              @foreach ($myEvents as $e)
+              @foreach ($events->take(8) as $e)
               <tr>
                 <td class="px-4 py-3 font-medium">{{ $e['title'] }}</td>
                 <td class="px-4 py-3">{{ \Illuminate\Support\Carbon::parse($e['date'])->format('D, M j · H:i') }}</td>
-                <td class="px-4 py-3">{{ $e['visitors'] }}</td>
+                <td class="px-4 py-3">{{ $e['visitor_count'] }}</td>
                 <td class="px-4 py-3">
                   <span @class([
                     'text-xs px-2 py-1 rounded-full',
@@ -84,9 +88,9 @@
                   ])>{{ $e['status'] }}</span>
                 </td>
                 <td class="px-4 py-3 text-right">
-                  <a href="{{ url('/events/1/edit') }}" class="text-indigo-600 hover:underline">Edit</a>
+                  <a href="{{ url('/events/' . $e['id'] . '/edit') }}" class="text-indigo-600 hover:underline">Edit</a>
                   <span class="mx-2 text-gray-300">|</span>
-                  <a href="{{ url('/events/1') }}" class="text-gray-600 hover:underline">View</a>
+                  <a href="{{ url('/events/' . $e['id']) }}" class="text-gray-600 hover:underline">View</a>
                 </td>
               </tr>
               @endforeach

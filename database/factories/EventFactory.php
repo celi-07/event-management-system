@@ -23,6 +23,8 @@ class EventFactory extends Factory
             'title' => $this->faker->sentence(3),
             'date' => $this->faker->dateTimeBetween('+1 week', '+3 months'),
             'host_id' => $users->random()->id,
+            'visitor_count' => $this->faker->numberBetween(0, 100),
+            'status' => $this->faker->randomElement(['Draft', 'Published']),
             'location' => $this->faker->address(),
             'description' => $this->faker->paragraph(),
         ];

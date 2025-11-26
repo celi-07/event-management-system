@@ -22,15 +22,15 @@
     </div>
 
     <nav class="space-y-1 text-sm">
-      <a href="{{ route('dashboard') }}" class="flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700">
+      <a href="{{ route('dashboard') }}" class="{{ $page === 'Dashboard' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700' : 'block rounded-xl px-3 py-2 hover:bg-gray-100' }}">
         <span>Dashboard</span>
       </a>
-      <a href="{{ url('/events') }}" class="block rounded-xl px-3 py-2 hover:bg-gray-100">My Events</a>
-      <a href="{{ url('/invitations') }}" class="block rounded-xl px-3 py-2 hover:bg-gray-100">Invitations</a>
-      <a href="{{ url('/discover') }}" class="block rounded-xl px-3 py-2 hover:bg-gray-100">Discover</a>
-      <a href="{{ url('/profile') }}" class="block rounded-xl px-3 py-2 hover:bg-gray-100">Profile</a>
+      <a href="{{ url('/my-events') }}" class="{{ $page === 'My Events' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700' : 'block rounded-xl px-3 py-2 hover:bg-gray-100' }}">My Events</a>
+      <a href="{{ url('/invitations') }}" class="{{ $page === 'Invitations' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700' : 'block rounded-xl px-3 py-2 hover:bg-gray-100' }}">Invitations</a>
+      <a href="{{ url('/discover') }}" class="{{ $page === 'Discover' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700' : 'block rounded-xl px-3 py-2 hover:bg-gray-100' }}">Discover</a>
+      <a href="{{ url('/profile') }}" class="{{ $page === 'Profile' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-indigo-50 text-indigo-700' : 'block rounded-xl px-3 py-2 hover:bg-gray-100' }}">Profile</a>
       <div class="pt-4">
-        <a href="{{ url('/events/create') }}" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-white">
+        <a href="{{ url('/create/events') }}" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-3 py-2 text-white">
           <img src="{{ asset('images/add.svg') }}" class="h-4 w-4" alt="Plus Icon" />
           Create Event
         </a>
@@ -59,19 +59,24 @@
         <button @click="open=!open" class="md:hidden rounded-lg p-2 hover:bg-gray-100">
           <img src="{{ asset('images/burger.svg') }}" class="h-5 w-5 opacity-50" alt="Menu" />
         </button>
-        <div class="flex-1 max-w-xl mr-20">
-          <form method="GET" action="{{ url('/discover') }}">
-            <div class="relative">
-              <input 
-                class="w-full rounded-xl border-gray-200 bg-gray-50 pl-10 pr-3 py-2 focus:bg-white focus:border-indigo-400 focus:ring-indigo-400"
-                value="{{ request('q') }}"
-                name="q" 
-                placeholder="Search events, hosts, tags…" 
-            />
-              <img src="{{ asset('images/search.svg') }}" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-50" alt="Search Icon" />
-            </div>
-          </form>
-        </div>
+        @if($page === 'Dashboard' || $page === 'My Events' || $page === 'Invitations' || $page === 'Discover')
+          <div class="flex-1 max-w-xl mr-20">
+            <form 
+              method="GET" 
+              action="{{ $page === 'Discover' || $page === 'Dashboard' ? url('/discover') : ($page === 'Invitations' ? url('/invitations') : ($page === 'My Events' ? url('/my-events') : '#')) }}"
+            >
+              <div class="relative">
+                <input 
+                  class="w-full rounded-xl border-gray-200 bg-gray-50 pl-10 pr-3 py-2 focus:bg-white focus:border-indigo-400 focus:ring-indigo-400"
+                  value="{{ request('q') }}"
+                  name="q" 
+                  placeholder="Search events, hosts, tags…" 
+              />
+                <img src="{{ asset('images/search.svg') }}" class="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 opacity-50" alt="Search Icon" />
+              </div>
+            </form>
+          </div>
+        @endif
         <div class="flex items-center gap-3">
             <a href="{{ url('/invitations') }}" class="relative rounded-lg p-2 hover:bg-gray-100">
                 <span class="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-indigo-600 text-white text-xs px-1">3</span>

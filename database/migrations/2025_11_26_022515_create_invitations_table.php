@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('event_id')->constrained('events')->onDelete('cascade');
             $table->foreignId('invitee_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+            $table->enum('status', ['Pending', 'Accepted', 'Declined'])->default('Pending');
             $table->dateTime('sent_at')->nullable();
             $table->dateTime('responded_at')->nullable();
             $table->timestamps();

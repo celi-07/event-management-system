@@ -24,7 +24,7 @@ class InvitationFactory extends Factory
         return [
             'event_id' => $events->random()->id,
             'invitee_id' => $users->random()->id,
-            'status' => $this->faker->randomElement(['pending', 'accepted', 'declined']),
+            'status' => $this->faker->randomElement(['Pending','Accepted','Declined']),
             'sent_at' => $this->faker->dateTimeBetween('-1 month', 'now'),
             'responded_at' => null,
         ];
