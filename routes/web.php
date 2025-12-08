@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
@@ -25,3 +26,7 @@ Route::controller(EventController::class)->group(function () {
 });
 
 Route::get('/invitations', [InvitationController::class, 'getInvitations'])->name('invitations');
+Route::get('/auth', [AuthController::class, 'getAuth'])->name('auth');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
