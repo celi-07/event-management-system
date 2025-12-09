@@ -9,27 +9,6 @@ use Illuminate\Http\Request;
 
 class EventController extends Controller
 {
-    public function getMyData() {
-        // User Id is still hard coded and will be replaced with auth user id later
-        $userId = User::all()->first()->id;
-
-        $allInvitations = Invitation::all();
-        $invitations = User::find($userId)
-            ->invitations()
-            ->get();
-        $events = User::find($userId)
-            ->hostedEvents()
-            ->get();
-        
-        return view('dashboard', [
-            'page' => 'Dashboard',
-            'user' => User::find($userId),
-            'allInvitations' => $allInvitations,
-            'invitations' => $invitations,
-            'events' => $events,
-        ]);
-    }
-
     public function discover(Request $r) {
         $query = $r->input('q');
 
