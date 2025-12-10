@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Invitation;
 use Illuminate\Http\Request;
 
 class InvitationController extends Controller
@@ -38,6 +39,28 @@ class InvitationController extends Controller
                 'page' => 'Invitations',
                 'invitations' => $invitations,
             ]);
+        }
+    }
+
+    public function registerInvitation($eventId) {
+        try {
+            $user = auth()->user();
+            
+            if (Invitation::where('event_id', $eventId)->where('invitee_id', $user->id)->exists()) {
+                return back()->with('error', 'You have already registered for this event.');
+            }
+            
+            Invitation::create([
+                'event_id' => $eventId,
+                'invitee_id' => $user->id,
+                'status' => 'Pending',
+                'sent_at' => NULL,
+                'responded_at' => now(),
+            ]);
+
+            return back()->with('success', "Successfully registered for the event!");
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to register for the event. Please try again.');
         }
     }
 }

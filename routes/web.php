@@ -30,6 +30,7 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(InvitationController::class)->group(function () {
     Route::get('/invitations', 'getInvitations')->name('invitations');
+    Route::post('/invitations/{eventId}', 'registerInvitation')->name('invititation.register');
 });
 
 Route::controller(UserController::class)->group(function () {
