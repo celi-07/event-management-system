@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('status', ['Draft', 'Published'])->default('Draft');
             $table->foreignId('host_id')->constrained('users')->onDelete('cascade');
             $table->string('location');
+            $table->string('image')->nullable();
             $table->longText('description')->nullable();
             $table->timestamps();
         });

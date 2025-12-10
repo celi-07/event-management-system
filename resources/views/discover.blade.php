@@ -18,11 +18,17 @@
                         <div class="card h-100 shadow-sm">
                             @php
                                 $image = $event->image ?? ($event->image_url ?? null);
-                                $imageUrl = $image ? (Str::startsWith($image, ['http://','https://']) ? $image : asset('storage/'.$image)) : 'https://picsum.photos/400/200';
+                                $imageUrl = $image ? (Str::startsWith($image, ['http://','https://']) ? $image : asset($image)) : '';
                                 $start = $event->start_date ?? $event->date ?? null;
                             @endphp
 
-                            <img src="{{ $imageUrl }}" class="card-img-top" alt="{{ $event->title ?? 'Event image' }}" style="object-fit:cover; height:200px;">
+                            @if($imageUrl)
+                                <img src="{{ $imageUrl }}" class="card-img-top" alt="{{ $event->title ?? 'Event image' }}" style="object-fit:cover; height:200px;">
+                            @else
+                                <div class="w-full h-[200px] bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center rounded-t-[5px]">
+                                    <span class="text-white text-4xl font-bold">{{ substr($event->name, 0, 1) }}</span>
+                                </div>
+                            @endif
 
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title font-bold text-[20px]">{{ $event->title ?? 'Untitled Event' }}</h5>

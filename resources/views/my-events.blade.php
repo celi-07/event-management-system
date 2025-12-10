@@ -1,13 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
+
+@if(session('success'))
+    <div id="success-alert" class="bg-green-200 border border-green-200 text-green-700 px-4 py-3 text-[14px] font-semibold rounded-2xl relative mb-4 transition-opacity duration-500" role="alert">
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+    <script>
+        setTimeout(() => {
+            const alert = document.getElementById('success-alert');
+            if (alert) {
+                alert.style.opacity = '0';
+                setTimeout(() => alert.remove(), 500);
+            }
+        }, 5000);
+    </script>
+@endif
+
 <section class="xl:col-span-2">
       <div class="rounded-2xl border border-gray-200 bg-white">
         <div class="flex items-center justify-between p-4 border-b border-gray-100">
           <h2 class="font-semibold">My Events</h2>
           <div class="flex items-center gap-2">
             <a href="{{ url('/create/events') }}" class="text-sm rounded-lg border px-3 py-1.5 hover:bg-gray-50">Create</a>
-            <a href="{{ url('/events') }}" class="text-sm text-indigo-600 hover:underline">Manage</a>
           </div>
         </div>
 

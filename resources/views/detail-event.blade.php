@@ -44,7 +44,7 @@
     {{-- Event Header --}}
     <div class="bg-white rounded-lg shadow-lg overflow-hidden mb-6">
         @if($event->image)
-            <img src="{{ asset('storage/' . $event->image) }}" alt="{{ $event->name }}" class="w-full h-64 object-cover">
+            <img src="{{ asset($event->image) }}" alt="{{ $event->name }}" class="w-full h-64 object-cover">
         @else
             <div class="w-full h-64 bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
                 <span class="text-white text-4xl font-bold">{{ substr($event->name, 0, 1) }}</span>
@@ -52,7 +52,7 @@
         @endif
         
         <div class="p-6">
-            <h1 class="text-3xl font-bold text-[24px] mb-4">{{ $event->title }}</h1>
+            <h1 class="font-bold text-[24px] mb-4">{{ $event->title }}</h1>
             
             {{-- Event Meta Info --}}
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-12">

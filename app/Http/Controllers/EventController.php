@@ -35,10 +35,113 @@ class EventController extends Controller
         ]);
     }
 
-    public function getEdit() {
+    public function store(Request $request) {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'date' => 'required|date|after_or_equal:today',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string|min:10',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            $status = $request->input('action') === 'draft' ? 'Draft' : 'Published';
+            $imagePath = null;
+
+            // Handle image upload
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/events'), $imageName);
+                $imagePath = 'uploads/events/' . $imageName;
+            }
+
+            $event = Event::create([
+                'title' => $data['title'],
+                'date' => $data['date'],
+                'location' => $data['location'],
+                'description' => $data['description'],
+                'image' => $imagePath,
+                'host_id' => auth()->id(),
+                'status' => $status,
+            ]);
+
+            if ($status === 'Published') {
+                return back()->with('success', 'Event created successfully!');
+            } else {
+                return back()->with('success', 'Event saved as draft successfully!');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to create event. Please try again.')
+                ->withInput();
+        }
+    }
+
+    public function getEdit($id) {
+        $event = Event::findOrFail($id);
+
         return view('edit-event', [
             'page' => 'Edit Event',
+            'event' => $event,
         ]);
+    }
+
+    public function update(Request $request, $id) {
+        $event = Event::findOrFail($id);
+
+        // Prevent edits on published events
+        if ($event->status === 'Published') {
+            return back()->with('error', 'Published events cannot be edited.');
+        }
+
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'date' => 'required|date|after_or_equal:today',
+            'location' => 'required|string|max:255',
+            'description' => 'required|string|min:10',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        try {
+            $imagePath = $event->image;
+
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension();
+                $image->move(public_path('uploads/events'), $imageName);
+                $imagePath = 'uploads/events/' . $imageName;
+            }
+
+            $newStatus = $event->status;
+            if ($event->status === 'Draft' && $request->boolean('publish_now')) {
+                $newStatus = 'Published';
+            }
+
+            $event->update([
+                'title' => $data['title'],
+                'date' => $data['date'],
+                'location' => $data['location'],
+                'description' => $data['description'],
+                'image' => $imagePath,
+                'status' => $newStatus,
+            ]);
+
+            return back()->with('success', $newStatus === 'Published' ? 'Event updated and published successfully!' : 'Event updated successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update event. Please try again.')
+                ->withInput();
+        }
+    }
+
+    public function destroy($id) {
+        $event = Event::findOrFail($id);
+
+        try {
+            $event->delete();
+            return redirect()->route('my.events')->with('success', 'Event deleted successfully!');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to delete event. Please try again.');
+        }
     }
 
     public function getDetail($id) {
@@ -50,10 +153,7 @@ class EventController extends Controller
     }
 
     public function getMyEvents(Request $r) {
-        // User Id is still hard coded and will be replaced with auth user id later
-        $userId = User::all()
-            ->first()
-            ->id;
+        $userId = auth()->id();
 
         $query = $r->input('q');
         

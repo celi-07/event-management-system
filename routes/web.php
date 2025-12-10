@@ -17,7 +17,10 @@ Route::controller(EventController::class)->group(function () {
     Route::get('/discover', 'discover')->name('discover');
     Route::get('/events/{id}', 'getDetail')->name('events.show');
     Route::get('/create/events', 'getCreate')->name('create.events');
+    Route::post('/events/store', 'store')->name('events.store');
     Route::get('/events/{id}/edit', 'getEdit')->name('edit.events');
+    Route::put('/events/{id}', 'update')->name('events.update');
+    Route::delete('/events/{id}', 'destroy')->name('events.destroy');
     Route::get('/my-events', 'getMyEvents')->name('my.events');
 });
 

@@ -16,6 +16,8 @@ class Event extends Model
         'host_id',
         'location',
         'description',
+        'image',
+        'status',
     ];
 
     public function host() {

@@ -59,7 +59,7 @@
           <h2 class="font-bold text-[16px]">My Events</h2>
           <div class="flex items-center gap-2">
             <a href="{{ url('/create/events') }}" class="text-[12px] rounded-xl bg-[#01044e] font-semibold text-white border px-3 py-1.5 hover:bg-[#622733]">Create</a>
-            <a href="{{ url('/events') }}" class="text-[12px] text-[#01044e] hover:underline">Manage</a>
+            <a href="{{ url('/my-events') }}" class="text-[12px] text-[#01044e] hover:underline">Manage</a>
           </div>
         </div>
 
