@@ -20,30 +20,34 @@
   </div>
 
   <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-    {{-- Left: Upcoming Invitations --}}
+    {{-- Left: Your Invitations --}}
     <section class="xl:col-span-1">
       <div class="rounded-2xl border border-gray-200 bg-white">
         <div class="flex items-end justify-between p-4 border-b border-gray-100">
-          <h2 class="font-bold text-[16px]">Upcoming Invitations</h2>
+          <h2 class="font-bold text-[16px]">Your Invitations</h2>
           <a href="{{ url('/invitations') }}" class="text-[12px] font-semibold text-[#01044e] hover:underline">View all</a>
         </div>
         <ul class="divide-y divide-gray-100">
-          @foreach ($invitations->take(8) as $inv)
-          <li class="py-3 px-4 flex items-center justify-between">
-            <div>
-              <div class="font-regular text-[14px]">{{ $inv->event->title }}</div>
-              <div class="text-[12px] text-gray-600 font-light">
-                {{ \Illuminate\Support\Carbon::parse($inv['date'])->format('D, M j · H:i') }} · Host: {{ $inv->event->host->name }}
-              </div>
-            </div>
-            <span @class([
-                'text-[12px] text-center font-semibold inline-block w-[80px] py-1 rounded-full',
-                'bg-[#01044e] text-white' => $inv['status']==='Accepted',
-                'bg-indigo-50 text-[#01044e]' => $inv['status']==='Pending',
-                'bg-[#622733] text-white' => $inv['status']==='Declined',
-            ])>{{ $inv['status'] }}</span>
-          </li>
-          @endforeach
+          @if ($invitations->count() == 0)
+            <x-empty-data class="h-[300px] flex flex-col items-center justify-center" />
+          @else
+            @foreach ($invitations->take(8) as $inv)
+              <li class="py-3 px-4 flex items-center justify-between">
+                <div>
+                  <div class="font-regular text-[14px]">{{ $inv->event->title }}</div>
+                  <div class="text-[12px] text-gray-600 font-light">
+                    {{ \Illuminate\Support\Carbon::parse($inv['date'])->format('D, M j · H:i') }} · Host: {{ $inv->event->host->name }}
+                  </div>
+                </div>
+                <span @class([
+                    'text-[12px] text-center font-semibold inline-block w-[80px] py-1 rounded-full',
+                    'bg-[#01044e] text-white' => $inv['status']==='Accepted',
+                    'bg-indigo-50 text-[#01044e]' => $inv['status']==='Pending',
+                    'bg-[#622733] text-white' => $inv['status']==='Declined',
+                ])>{{ $inv['status'] }}</span>
+              </li>
+            @endforeach
+          @endif
         </ul>
       </div>
     </section>
@@ -71,25 +75,33 @@
               </tr>
             </thead>
             <tbody class="divide-y divide-gray-100">
-              @foreach ($events->take(9) as $e)
+              @if ($events->count() == 0)
                 <tr>
-                  <td class="px-4 py-3 text-center text-[14px]">{{ $e['title'] }}</td>
-                  <td class="px-4 py-3 text-center text-[14px] font-light">{{ \Illuminate\Support\Carbon::parse($e['date'])->format('D, M j · H:i') }}</td>
-                  <td class="px-4 py-3 text-center text-[14px] font-light">{{ $e['visitor_count'] }}</td>
-                  <td class="px-4 py-3 text-center">
-                    <span @class([
-                      'text-[12px] inline-block w-[80px] py-1 rounded-full text-center font-semibold',
-                      'bg-[#01044e] text-[#fff]' => $e['status']==='Published',
-                      'bg-indigo-50 text-text-[#01044e]' => $e['status']==='Draft',
-                    ])>{{ $e['status'] }}</span>
-                  </td>
-                  <td class="px-4 py-3 text-center">
-                    <a href="{{ url('/events/' . $e['id'] . '/edit') }}" class="text-[#01044e] text-[12px] font-semibold hover:underline">Edit</a>
-                    <span class="mx-2 text-gray-300">|</span>
-                    <a href="{{ url('/events/' . $e['id']) }}" class="text-[#622733] text-[12px] font-semibold hover:underline">View</a>
+                  <td colspan="5" class="px-4 py-3">
+                    <x-empty-data class="h-[241px] flex flex-col items-center justify-center" />
                   </td>
                 </tr>
-              @endforeach
+              @else
+                @foreach ($events->take(9) as $e)
+                  <tr>
+                    <td class="px-4 py-3 text-center text-[14px]">{{ $e['title'] }}</td>
+                    <td class="px-4 py-3 text-center text-[14px] font-light">{{ \Illuminate\Support\Carbon::parse($e['date'])->format('D, M j · H:i') }}</td>
+                    <td class="px-4 py-3 text-center text-[14px] font-light">{{ $e['visitor_count'] }}</td>
+                    <td class="px-4 py-3 text-center">
+                      <span @class([
+                        'text-[12px] inline-block w-[80px] py-1 rounded-full text-center font-semibold',
+                        'bg-[#01044e] text-[#fff]' => $e['status']==='Published',
+                        'bg-indigo-50 text-text-[#01044e]' => $e['status']==='Draft',
+                      ])>{{ $e['status'] }}</span>
+                    </td>
+                    <td class="px-4 py-3 text-center">
+                      <a href="{{ url('/events/' . $e['id'] . '/edit') }}" class="text-[#01044e] text-[12px] font-semibold hover:underline">Edit</a>
+                      <span class="mx-2 text-gray-300">|</span>
+                      <a href="{{ url('/events/' . $e['id']) }}" class="text-[#622733] text-[12px] font-semibold hover:underline">View</a>
+                    </td>
+                  </tr>
+                @endforeach
+              @endif
             </tbody>
           </table>
         </div>

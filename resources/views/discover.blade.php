@@ -1,56 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+
 <div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <div>
-            <h1 class="h3 mb-0">Discover Events</h1>
-            <p class="text-muted mb-0">Browse upcoming events near you.</p>
-        </div>
+    <div class="mb-4">
+        <h2 class="text-3xl font-bold mb-1">Discover Events</h2>
+        <p class="text-[14px] text-gray-600">Browse upcoming events near you.</p>
     </div>
 
     @if($events->count())
-        <div class="row g-4">
-            @foreach($events as $event)
-                <div class="col-12 col-md-6 col-lg-4">
-                    <div class="card h-100 shadow-sm">
-                        @php
-                            $image = $event->image ?? ($event->image_url ?? null);
-                            $imageUrl = $image ? (Str::startsWith($image, ['http://','https://']) ? $image : asset('storage/'.$image)) : 'https://via.placeholder.com/600x300?text=No+Image';
-                            $start = $event->start_date ?? $event->date ?? null;
-                        @endphp
+        <div>
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+                @foreach($events as $event)
+                    <div class="col">
+                        <div class="card h-100 shadow-sm">
+                            @php
+                                $image = $event->image ?? ($event->image_url ?? null);
+                                $imageUrl = $image ? (Str::startsWith($image, ['http://','https://']) ? $image : asset('storage/'.$image)) : 'https://picsum.photos/400/200';
+                                $start = $event->start_date ?? $event->date ?? null;
+                            @endphp
 
-                        <img src="{{ $imageUrl }}" class="card-img-top" alt="{{ $event->title ?? 'Event image' }}" style="object-fit:cover; height:180px;">
+                            <img src="{{ $imageUrl }}" class="card-img-top" alt="{{ $event->title ?? 'Event image' }}" style="object-fit:cover; height:200px;">
 
-                        <div class="card-body d-flex flex-column">
-                            <h5 class="card-title mb-1">{{ $event->title ?? 'Untitled Event' }}</h5>
-                            <div class="text-muted small mb-2">
-                                <span class="me-3">
-                                    <i class="bi bi-calendar-event"></i>
-                                    {{ $start ? (is_string($start) ? $start : \Carbon\Carbon::parse($start)->format('M d, Y')) : 'TBA' }}
-                                </span>
-                                @if(!empty($event->location))
-                                    <span>
-                                        <i class="bi bi-geo-alt"></i>
-                                        {{ $event->location }}
-                                    </span>
-                                @endif
-                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title font-bold text-[20px]">{{ $event->title ?? 'Untitled Event' }}</h5>
+                                
+                                <div class="text-muted small mb-3">
+                                    <div class="font-semibold text-[14px] mb-1">
+                                        <i class="bi bi-calendar-event me-1"></i>
+                                        {{ $start ? (is_string($start) ? $start : \Carbon\Carbon::parse($start)->format('M d, Y')) : 'TBA' }}
+                                    </div>
+                                    @if(!empty($event->location))
+                                        <div class="font-semibold text-[14px]">
+                                            <i class="bi bi-geo-alt me-1"></i>
+                                            {{ $event->location }}
+                                        </div>
+                                    @endif
+                                </div>
 
-                            <p class="card-text text-muted mb-3 flex-grow-1">
-                                {{ \Illuminate\Support\Str::limit($event->description ?? $event->excerpt ?? '', 140) }}
-                            </p>
+                                <p class="card-text text-muted flex-grow-1 text-[14px] font-light">
+                                    {{ \Illuminate\Support\Str::limit($event->description ?? $event->excerpt ?? '', 160) }}
+                                </p>
 
-                            <div class="d-flex justify-content-between align-items-center mt-2">
-                                <a href="{{ route('events.show', $event->id) }}" class="btn btn-outline-primary btn-sm">View</a>
-                                @if(!empty($event->capacity))
-                                    <small class="text-muted">{{ $event->attendees_count ?? 0 }} / {{ $event->capacity }} going</small>
-                                @endif
+                                <div class="mt-auto bg-[#01044e] text-center py-2 rounded-lg">
+                                    <a href="{{ route('events.show', $event->id) }}" class="w-100 font-semibold text-[15px] no-underline text-white">View Details</a>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
 
         <div class="mt-4 d-flex justify-content-center">
@@ -67,4 +68,6 @@
         </div>
     @endif
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 @endsection

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
@@ -29,6 +30,12 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(InvitationController::class)->group(function () {
     Route::get('/invitations', 'getInvitations')->name('invitations');
+});
+
+Route::controller(UserController::class)->group(function () {
+    Route::put('/profile/image/update', 'updateProfileImage')->name('profile.image.update');
+    Route::put('/profile/update', 'updateProfileInfo')->name('profile.update');
+    Route::put('/profile/password/update', 'updatePassword')->name('profile.password.update');
 });
 
 Route::get('/', [DashboardController::class, 'getMyData'])->name('dashboard');

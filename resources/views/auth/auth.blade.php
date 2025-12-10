@@ -373,10 +373,10 @@
         <div class="overlay-container">
             <div class="overlay">
                 <div class="overlay-panel overlay-right">
-                    <img src="{{ asset('images/register.png') }}" alt="My Image">
+                    {{-- <img src="{{ asset('images/register.png') }}" alt="My Image"> --}}
                 </div>
                 <div class="overlay-panel overlay-left">
-                    <img src="{{ asset('images/login.png') }}" alt="My Image">
+                    {{-- <img src="{{ asset('images/login.png') }}" alt="My Image"> --}}
                 </div>
             </div>
         </div>

@@ -11,6 +11,10 @@ class AuthController extends Controller
 {
     public function getAuth()
     {
+        if (Auth::check()) {
+            return redirect()->route('dashboard');
+        }
+
         return view('auth.auth', [
             'page' => 'Authentication',
         ]);
@@ -66,6 +70,9 @@ class AuthController extends Controller
 
     public function logout(Request $request)
     {
-        // Handle logout logic here
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('auth');
     }
 }
