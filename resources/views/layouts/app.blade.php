@@ -29,12 +29,12 @@
           class="fixed inset-y-0 left-0 z-40 w-72 border-r border-gray-200 p-4 transition-transform -translate-x-full md:translate-x-0 bg-white"
           :class="{ 'translate-x-0': open }"
         >
-          <div class="flex items-center gap-2 mb-8 -mt-2">
+          <div class="flex items-center gap-2 mb-8">
             <div class="h-8 w-8 flex items-center justify-center flex-shrink-0">
               <img src="{{ asset('images/logo.png') }}" class="h-full w-full object-contain" alt="">
             </div>
             <h2 
-              class="font-bold text-[20px] h-8 flex items-center mt-2" 
+              class="font-bold text-[20px] h-8 flex items-center" 
               style="
                 letter-spacing: 8px;
                 color: #430000;
@@ -46,13 +46,11 @@
           </div>
 
           <nav class="space-y-1 text-sm">
-            <a href="{{ route('dashboard') }}" class="no-underline {{ $page === 'Dashboard' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-[#622733] text-[#fff] hover:bg-[#01044e] font-semibold' : 'block rounded-xl px-3 py-2 text-[#430000] font-semibold hover:bg-indigo-50' }}">
-              <span>Dashboard</span>
-            </a>
-            <a href="{{ url('/my-events') }}" class="no-underline {{ $page === 'My Events' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-[#622733] text-[#fff] hover:bg-[#01044e] font-semibold' : 'block rounded-xl px-3 py-2 text-[#430000] font-semibold hover:bg-indigo-50' }}">My Events</a>
-            <a href="{{ url('/invitations') }}" class="no-underline {{ $page === 'Invitations' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-[#622733] text-[#fff] hover:bg-[#01044e] font-semibold' : 'block rounded-xl px-3 py-2 text-[#430000] font-semibold hover:bg-indigo-50' }}">Invitations</a>
-            <a href="{{ url('/discover') }}" class="no-underline {{ $page === 'Discover' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-[#622733] text-[#fff] hover:bg-[#01044e] font-semibold' : 'block rounded-xl px-3 py-2 text-[#430000] font-semibold hover:bg-indigo-50' }}">Discover</a>
-            <a href="{{ url('/profile') }}" class="no-underline {{ $page === 'Profile' ? 'flex items-center justify-between rounded-xl px-3 py-2 bg-[#622733] text-[#fff] hover:bg-[#01044e] font-semibold' : 'block rounded-xl px-3 py-2 text-[#430000] font-semibold hover:bg-indigo-50' }}">Profile</a>
+            <a href="{{ route('dashboard') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Dashboard' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Dashboard</a>
+            <a href="{{ url('/my-events') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'My Events' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">My Events</a>
+            <a href="{{ url('/invitations') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Invitations' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Invitations</a>
+            <a href="{{ url('/discover') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Discover' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Discover</a>
+            <a href="{{ url('/profile') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Profile' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Profile</a>
             <div class="pt-4">
               <a href="{{ url('/create/events') }}" class="no-underline inline-flex items-center justify-center gap-2 rounded-xl bg-[#01044e] font-semibold px-4 py-2 text-white hover:bg-[#622733]">
                 <img src="{{ asset('images/add.svg') }}" class="h-4 w-4" alt="Plus Icon" />

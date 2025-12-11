@@ -36,7 +36,6 @@
     </script>
 @endif
 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
 
 <style>
@@ -69,15 +68,13 @@
     }
 </style>
 
-<div class="container py-5">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="mb-4">
-                <h1 class="text-3xl font-bold">Edit Event</h1>
-                <p class="text-[14px] text-gray-600">Status: <span class="fw-semibold">{{ $event->status }}</span></p>
-            </div>
+<div class="max-w-4xl mx-auto py-8">
+    <div class="mb-4">
+        <h1 class="text-3xl font-bold">Edit Event</h1>
+        <p class="text-[14px] text-gray-600">Status: <span class="font-semibold">{{ $event->status }}</span></p>
+    </div>
 
-            <div class="bg-white shadow-sm border-0 rounded-2xl">
+    <div class="bg-white shadow-sm border-0 rounded-2xl">
                 <div class="p-8">
                     <form action="{{ route('events.update', $event->id) }}" method="POST" enctype="multipart/form-data">
                         @csrf
@@ -173,23 +170,31 @@
 
                         @unless($isPublished)
                             <!-- Publish Toggle for Drafts -->
-                            <div class="mb-4 form-check form-switch flex items-center">
-                                <input class="form-check-input" type="checkbox" role="switch" id="publish_now" name="publish_now" value="1">
-                                <label class="form-check-label mt-[5px] ml-3 text-[14px] fw-semibold" for="publish_now">Publish this draft</label>
+                            <div class="mb-4 flex items-center">
+                                <label class="relative inline-flex items-center cursor-pointer">
+                                    <input type="checkbox" id="publish_now" name="publish_now" value="1" class="sr-only peer">
+                                    <div class="w-10 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#01044e]"></div>
+                                    <span class="ms-3 text-[16px] font-light text-gray-900">Publish this draft</span>
+                                </label>
                             </div>
                         @endunless
 
                         <!-- Buttons Row -->
-                        <div class="d-flex justify-content-end gap-3 pt-3">
-                            @unless($isPublished)
-                                <button type="submit" class="px-5 fw-semibold bg-[#01044e] text-white rounded-lg hover:opacity-50 py-[6px] border-1 border-[#01044e]">
-                                    <i class="bi bi-pencil-square me-2"></i>Save Changes
+                        <div class="flex justify-between items-center pt-3">
+                            <a href="{{ route('my.events') }}" class="px-5 py-[6px] rounded-lg border border-gray-200 text-gray-700 font-semibold text-[14px] hover:bg-gray-50">
+                                Cancel
+                            </a>
+                            <div class="flex justify-end gap-3 pt-3">
+                                @unless($isPublished)
+                                    <button type="submit" class="px-5 font-semibold text-[14px] bg-[#01044e] text-white rounded-lg hover:opacity-50 py-[6px] border-1 border-[#01044e]">
+                                        <i class="bi bi-pencil-square me-2"></i>Save Changes
+                                    </button>
+                                @endunless
+                                
+                                <button type="button" onclick="deleteEvent()" class="px-5 font-semibold text-[14px] border border-[#622733] text-[#622733] rounded-lg hover:opacity-50 py-[6px]">
+                                    <i class="bi bi-trash me-2"></i>Delete
                                 </button>
-                            @endunless
-                            
-                            <button type="button" onclick="deleteEvent()" class="px-5 fw-semibold border-1 border-[#622733] text-[#622733] rounded-lg hover:opacity-50 py-[6px]">
-                                <i class="bi bi-trash me-2"></i>Delete
-                            </button>
+                            </div>
                         </div>
                     </form>
 
@@ -208,8 +213,6 @@
                     </script>
                 </div>
             </div>
-        </div>
-    </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
