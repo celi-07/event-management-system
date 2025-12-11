@@ -9,10 +9,14 @@ use Illuminate\Http\Request;
 class InvitationController extends Controller
 {
     public function getInvitations(Request $r) {
-        // User Id is still hard coded and will be replaced with auth user id later
-        $userId = User::all()
-            ->first()
-            ->id;
+        $userId = auth()->id() ?? User::query()->value('id');
+
+        if (!$userId) {
+            return view('invitations', [
+                'page' => 'Invitations',
+                'invitations' => collect(),
+            ]);
+        }
 
         $query = $r->input('q');
         
@@ -62,5 +66,29 @@ class InvitationController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', 'Failed to register for the event. Please try again.');
         }
+    }
+
+    public function respond(Request $request, Invitation $invitation)
+    {
+        $request->validate([
+            'status' => 'required|in:Accepted,Declined',
+        ]);
+
+        $user = auth()->user();
+
+        if (!$user || $invitation->invitee_id !== $user->id) {
+            return back()->with('error', 'Not authorized to update this invitation.');
+        }
+
+        if ($invitation->status !== 'Pending') {
+            return back()->with('error', 'Invitation already responded.');
+        }
+
+        $invitation->update([
+            'status' => $request->input('status'),
+            'responded_at' => now(),
+        ]);
+
+        return back()->with('success', 'Invitation updated to ' . strtolower($request->input('status')) . '.');
     }
 }

@@ -146,9 +146,14 @@ class EventController extends Controller
 
     public function getDetail($id) {
         $event = Event::find($id);
+        $isHost = auth()->check() && auth()->id() === $event->host_id;
+        $isRegistered = auth()->check() && Invitation::where('event_id', $id)->where('invitee_id', auth()->id())->exists();
+        
         return view('detail-event', [
             'page' => 'Event Detail',
             'event' => $event,
+            'isHost' => $isHost,
+            'isRegistered' => $isRegistered,
         ]);
     }
 
@@ -178,5 +183,42 @@ class EventController extends Controller
                 'events' => $events,
             ]);
         }
+    }
+
+    public function sendInvite(Request $request, $eventId)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $event = Event::find($eventId);
+        $user = auth()->user();
+
+        // Check if user is the host
+        if ($event->host_id !== $user->id) {
+            return back()->with('error', 'Only the event host can invite users.');
+        }
+
+        // Find user by email
+        $invitedUser = User::where('email', $request->input('email'))->first();
+
+        if (!$invitedUser) {
+            return back()->with('error', 'User with this email not found.');
+        }
+
+        // Check if already invited
+        if (Invitation::where('event_id', $eventId)->where('invitee_id', $invitedUser->id)->exists()) {
+            return back()->with('error', 'User already invited to this event.');
+        }
+
+        // Create invitation
+        Invitation::create([
+            'event_id' => $eventId,
+            'invitee_id' => $invitedUser->id,
+            'status' => 'Pending',
+            'sent_at' => now(),
+        ]);
+
+        return back()->with('success', 'Invitation sent to ' . $invitedUser->name . '!');
     }
 }

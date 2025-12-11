@@ -22,6 +22,7 @@ Route::controller(EventController::class)->group(function () {
     Route::put('/events/{id}', 'update')->name('events.update');
     Route::delete('/events/{id}', 'destroy')->name('events.destroy');
     Route::get('/my-events', 'getMyEvents')->name('my.events');
+    Route::post('/events/{eventId}/invite', 'sendInvite')->name('events.sendInvite');
 });
 
 Route::controller(AuthController::class)->group(function () {
@@ -34,6 +35,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(InvitationController::class)->group(function () {
     Route::get('/invitations', 'getInvitations')->name('invitations');
     Route::post('/invitations/{eventId}', 'registerInvitation')->name('invititation.register');
+    Route::post('/invitations/{invitation}/respond', 'respond')->name('invitations.respond');
 });
 
 Route::controller(UserController::class)->group(function () {
