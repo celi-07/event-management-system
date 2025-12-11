@@ -48,7 +48,6 @@ class EventController extends Controller
             $status = $request->input('action') === 'draft' ? 'Draft' : 'Published';
             $imagePath = null;
 
-            // Handle image upload
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . auth()->id() . '.' . $image->getClientOriginalExtension();
@@ -89,7 +88,6 @@ class EventController extends Controller
     public function update(Request $request, $id) {
         $event = Event::findOrFail($id);
 
-        // Prevent edits on published events
         if ($event->status === 'Published') {
             return back()->with('error', 'Published events cannot be edited.');
         }
@@ -194,24 +192,20 @@ class EventController extends Controller
         $event = Event::find($eventId);
         $user = auth()->user();
 
-        // Check if user is the host
         if ($event->host_id !== $user->id) {
             return back()->with('error', 'Only the event host can invite users.');
         }
 
-        // Find user by email
         $invitedUser = User::where('email', $request->input('email'))->first();
 
         if (!$invitedUser) {
             return back()->with('error', 'User with this email not found.');
         }
 
-        // Check if already invited
         if (Invitation::where('event_id', $eventId)->where('invitee_id', $invitedUser->id)->exists()) {
             return back()->with('error', 'User already invited to this event.');
         }
 
-        // Create invitation
         Invitation::create([
             'event_id' => $eventId,
             'invitee_id' => $invitedUser->id,

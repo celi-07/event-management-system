@@ -106,7 +106,7 @@
               @endif
               <div class="flex items-center gap-3">
                   <a href="{{ url('/invitations') }}" class="relative rounded-lg p-2 hover:bg-gray-100">
-                      {{-- <span class="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#01044e] text-white text-xs px-1">3</span> --}}
+                      <span class="absolute -top-1 -right-1 inline-flex h-5 min-w-5 items-center justify-center rounded-full bg-[#01044e] text-white text-xs px-1">{{ auth()->user()->invitations()->where('status', 'pending')->count() }}</span>
                       <img src="{{ asset('images/invitation.svg') }}" class="h-5 w-5" alt="Invitations" />
                   </a>
                   <a href="{{ url('/profile') }}" class="no-underline flex items-center gap-2 rounded-lg px-2 py-1 hover:bg-gray-100">

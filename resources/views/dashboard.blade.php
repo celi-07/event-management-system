@@ -3,7 +3,6 @@
 @section('title','Dashboard')
 
 @section('content')
-  {{-- Page Title --}}
   <div class="mb-4 flex items-center justify-between">
     <div>
       <h1 class="text-3xl font-bold">Dashboard</h1>
@@ -11,7 +10,6 @@
     </div>
   </div>
 
-  {{-- KPI Cards --}}
   <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 mb-4">
     <x-stat-card label="My Events" :value="count($events)"/>
     <x-stat-card label="Invitations Sent" :value="count($invitations)"/>
@@ -20,7 +18,6 @@
   </div>
 
   <div class="grid grid-cols-1 xl:grid-cols-3 gap-6">
-    {{-- Left: Your Invitations --}}
     <section class="xl:col-span-1">
       <div class="rounded-2xl border border-gray-200 bg-white">
         <div class="flex items-end justify-between p-4 border-b border-gray-100">
@@ -52,7 +49,6 @@
       </div>
     </section>
 
-    {{-- Middle: My Events Table --}}
     <section class="xl:col-span-2">
       <div class="rounded-2xl border border-gray-200 bg-white">
         <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">

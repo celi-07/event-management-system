@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+
     <style>
         * {
             box-sizing: border-box;
@@ -275,18 +276,13 @@
         $message = is_array($authError) ? ($authError['message'] ?? []) : '';
 
         if (!$action && $errors->any()) {
-            // Check for Sign Up specific fields (these ONLY exist in sign up form)
             if ($errors->has('first_name') || 
                 $errors->has('last_name') || 
                 $errors->has('password_confirmation')) {
                 $action = 'signUp';
-            }
-            // If password/email error AND we have sign up form data in old input
-            elseif (old('first_name') !== null || old('last_name') !== null) {
+            } else if (old('first_name') !== null || old('last_name') !== null) {
                 $action = 'signUp';
-            }
-            // Otherwise it's sign in (default)
-            else {
+            } else {
                 $action = 'signIn';
             }
         }
@@ -324,6 +320,7 @@
                 <span>Don't have an account? <span class="overlay-button" id="signUp">Sign Up</span></span>
             </form>
         </div>
+        
         <div class="form-container sign-up-container">
             <form action="{{ route('register') }}" method="POST" enctype="multipart/form-data">
             @csrf

@@ -16,17 +16,14 @@ class UserController extends Controller
         
         $user = auth()->user();
         
-        // Delete old profile image if exists
         if ($user->profile_image && file_exists(public_path($user->profile_image))) {
             unlink(public_path($user->profile_image));
         }
         
-        // Store new image
         $image = $request->file('profile_image');
         $imageName = time() . '_' . $user->id . '.' . $image->getClientOriginalExtension();
         $image->move(public_path('uploads/profile_images'), $imageName);
         
-        // Update user profile image path
         $user->profile_image = 'uploads/profile_images/' . $imageName;
         $user->save();
         

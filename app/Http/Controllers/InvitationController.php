@@ -68,7 +68,7 @@ class InvitationController extends Controller
         }
     }
 
-    public function respond(Request $request, Invitation $invitation)
+    public function respondInvitation(Request $request, Invitation $invitation)
     {
         $request->validate([
             'status' => 'required|in:Accepted,Declined',

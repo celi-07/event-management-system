@@ -10,7 +10,7 @@
           @if ($invitations->count() == 0)
             <x-empty-data class="h-[300px] flex flex-col items-center justify-center" />
           @else
-            @foreach ($invitations->take(8) as $inv)
+            @foreach ($invitations as $inv)
               <li class="py-3 px-4 flex items-center justify-between {{ $inv['status']==='Pending' ? 'cursor-pointer hover:bg-gray-50 transition-colors' : '' }}"
                   @if($inv['status']==='Pending')
                       data-inv-id="{{ $inv->id }}"
@@ -36,7 +36,6 @@
       </div>
     </section>
 
-    <!-- Invitation Response Modal -->
     <div id="invitation-modal" class="hidden fixed inset-0 z-40 items-center justify-center bg-black/40">
         <div class="bg-white rounded-2xl shadow-xl max-w-md w-full mx-4 p-6 relative">
             <h3 class="text-xl font-bold mb-2" id="invitation-modal-title">Respond to Invitation</h3>

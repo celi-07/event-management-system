@@ -4,14 +4,9 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\InvitationController;
-
-Route::get('/profile', function () {
-    return view('profile', [
-        'page' => 'Profile',
-    ]);
-})->name('profile');
 
 Route::controller(EventController::class)->group(function () {
     Route::get('/discover', 'discover')->name('discover');
@@ -35,7 +30,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(InvitationController::class)->group(function () {
     Route::get('/invitations', 'getInvitations')->name('invitations');
     Route::post('/invitations/{eventId}', 'registerInvitation')->name('invititation.register');
-    Route::post('/invitations/{invitation}/respond', 'respond')->name('invitations.respond');
+    Route::post('/invitations/{invitation}/respond', 'respondInvitation')->name('invitations.respond');
 });
 
 Route::controller(UserController::class)->group(function () {
@@ -44,4 +39,5 @@ Route::controller(UserController::class)->group(function () {
     Route::put('/profile/password/update', 'updatePassword')->name('profile.password.update');
 });
 
+Route::get('/profile', [ProfileController::class, 'getProfile'])->name('profile');
 Route::get('/', [DashboardController::class, 'getMyData'])->name('dashboard');
