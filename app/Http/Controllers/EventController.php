@@ -15,7 +15,7 @@ class EventController extends Controller
         if (!$query) {
             return view('discover', [
                 'page' => 'Discover',
-                'events' => Event::all(),
+                'events' => Event::all()->where('status', 'Published'),
             ]);
         } else {
             $events = [];

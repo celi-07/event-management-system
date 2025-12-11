@@ -17,7 +17,7 @@ class EventFactory extends Factory
      */
     public function definition(): array
     {
-        $users = User::all();
+        $users = User::all()->where('is_organizer', true);
 
         return [
             'title' => $this->faker->sentence(3),

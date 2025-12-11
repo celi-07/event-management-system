@@ -21,9 +21,11 @@
       <div class="rounded-2xl border border-gray-200 bg-white">
         <div class="flex items-center justify-between p-4 border-b border-gray-100">
           <h2 class="font-semibold">My Events</h2>
-          <div class="flex items-center gap-2">
-            <a href="{{ url('/create/events') }}" class="text-sm rounded-lg border px-3 py-1.5 hover:bg-gray-50">Create</a>
-          </div>
+          @if(auth()->user()?->is_organizer)
+            <div class="flex items-center gap-2">
+              <a href="{{ url('/create/events') }}" class="text-sm rounded-lg border px-3 py-1.5 hover:bg-gray-50">Create</a>
+            </div>
+          @endif
         </div>
 
         <div class="overflow-x-auto">

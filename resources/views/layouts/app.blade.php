@@ -47,16 +47,20 @@
 
           <nav class="space-y-1 text-sm">
             <a href="{{ route('dashboard') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Dashboard' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Dashboard</a>
-            <a href="{{ url('/my-events') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'My Events' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">My Events</a>
+            @if(auth()->user()?->is_organizer)
+              <a href="{{ url('/my-events') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'My Events' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">My Events</a>
+            @endif
             <a href="{{ url('/invitations') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Invitations' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Invitations</a>
             <a href="{{ url('/discover') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Discover' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Discover</a>
             <a href="{{ url('/profile') }}" class="no-underline flex items-center justify-between rounded-xl px-3 py-2 font-semibold {{ $page === 'Profile' ? 'bg-[#622733] text-[#fff] hover:bg-[#01044e]' : 'text-[#430000] hover:bg-indigo-50' }}">Profile</a>
-            <div class="pt-4">
-              <a href="{{ url('/create/events') }}" class="no-underline inline-flex items-center justify-center gap-2 rounded-xl bg-[#01044e] font-semibold px-4 py-2 text-white hover:bg-[#622733]">
-                <img src="{{ asset('images/add.svg') }}" class="h-4 w-4" alt="Plus Icon" />
-                Create Event
-              </a>
-            </div>
+            @if(auth()->user()?->is_organizer)
+              <div class="pt-4">
+                <a href="{{ url('/create/events') }}" class="no-underline inline-flex items-center justify-center gap-2 rounded-xl bg-[#01044e] font-semibold px-4 py-2 text-white hover:bg-[#622733]">
+                  <img src="{{ asset('images/add.svg') }}" class="h-4 w-4" alt="Plus Icon" />
+                  Create Event
+                </a>
+              </div>
+            @endif
           </nav>
 
           <div class="absolute bottom-4 left-4 right-4 rounded-xl border border-gray-200 p-3 bg-gray-50">

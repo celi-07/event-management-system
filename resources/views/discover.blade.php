@@ -66,7 +66,9 @@
         </svg>
         <h4 class="text-xl font-semibold mb-2">No events found</h4>
         <p class="text-gray-500 mb-4">Try adjusting your search or check back later.</p>
-        <a href="{{ route('create.events') }}" class="inline-block bg-[#01044e] text-white px-6 py-2 rounded-lg font-semibold hover:opacity-80 transition">Create an event</a>
+        @if(auth()->user()?->is_organizer)
+            <a href="{{ route('create.events') }}" class="inline-block bg-[#01044e] text-white px-6 py-2 rounded-lg font-semibold hover:opacity-80 transition">Create an event</a>
+        @endif
     </div>
 @endif
 

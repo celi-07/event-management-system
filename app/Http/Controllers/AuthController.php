@@ -47,6 +47,7 @@ class AuthController extends Controller
             'last_name' => ['nullable', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:6', 'confirmed'],
+            'is_organizer' => ['nullable', 'boolean'],
         ]);
 
         try {
@@ -56,6 +57,7 @@ class AuthController extends Controller
                 'name' => $name,
                 'email' => $data['email'],
                 'password' => Hash::make($data['password']),
+                'is_organizer' => $request->boolean('is_organizer'),
             ]);
 
             Auth::login($user);
